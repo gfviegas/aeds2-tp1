@@ -7,10 +7,24 @@
 //
 
 #include <stdio.h>
+#include "TST.h"
 
 int main(int argc, const char * argv[]) {
-    // insert code here...
-    printf("Hello, World!\n");
+    TSTNodePointer root = NULL;
+    insertTST(&root,"she");
+    insertTST(&root,"sells");
+    insertTST(&root,"sea");
+    insertTST(&root,"shells");
+    insertTST(&root,"by");
+    insertTST(&root,"the");
+    insertTST(&root,"sea");
+    insertTST(&root,"shore");
+    insertTST(&root,"are");
+    insertTST(&root,"surely");
+    printf("Altura: %d \n", heightTST(root));
+    printf("Nós: %d \n", nodeAmountTST(root));
+    return 0;
+
     
     return 0;
 }
