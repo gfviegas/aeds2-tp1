@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		EC4060C8207CF43B002417A8 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = EC4060C7207CF43B002417A8 /* main.c */; };
+		EC6CC5352088D2EB00EA1627 /* Patricia.c in Sources */ = {isa = PBXBuildFile; fileRef = EC6CC5342088D2EB00EA1627 /* Patricia.c */; };
+		ECB158FF20862B00007E3D1A /* TST.c in Sources */ = {isa = PBXBuildFile; fileRef = ECB158FE20862B00007E3D1A /* TST.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +27,14 @@
 /* Begin PBXFileReference section */
 		EC4060C4207CF43B002417A8 /* aeds2-tp1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "aeds2-tp1"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC4060C7207CF43B002417A8 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		EC6CC5332088D2EB00EA1627 /* Patricia.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Patricia.h; sourceTree = "<group>"; };
+		EC6CC5342088D2EB00EA1627 /* Patricia.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = Patricia.c; sourceTree = "<group>"; };
+		ECB158FD20862B00007E3D1A /* TST.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TST.h; sourceTree = "<group>"; };
+		ECB158FE20862B00007E3D1A /* TST.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = TST.c; sourceTree = "<group>"; };
+		ECB159002086380A007E3D1A /* dicionario.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = dicionario.txt; sourceTree = "<group>"; };
+		ECB159012086397C007E3D1A /* texto1.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = texto1.txt; sourceTree = "<group>"; };
+		ECB159022086398C007E3D1A /* texto2.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = texto2.txt; sourceTree = "<group>"; };
+		ECB1590320863998007E3D1A /* texto3.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = texto3.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +68,14 @@
 			isa = PBXGroup;
 			children = (
 				EC4060C7207CF43B002417A8 /* main.c */,
+				ECB158FD20862B00007E3D1A /* TST.h */,
+				ECB158FE20862B00007E3D1A /* TST.c */,
+				ECB159002086380A007E3D1A /* dicionario.txt */,
+				ECB159012086397C007E3D1A /* texto1.txt */,
+				ECB159022086398C007E3D1A /* texto2.txt */,
+				ECB1590320863998007E3D1A /* texto3.txt */,
+				EC6CC5332088D2EB00EA1627 /* Patricia.h */,
+				EC6CC5342088D2EB00EA1627 /* Patricia.c */,
 			);
 			path = "aeds2-tp1";
 			sourceTree = "<group>";
@@ -120,6 +138,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				EC4060C8207CF43B002417A8 /* main.c in Sources */,
+				EC6CC5352088D2EB00EA1627 /* Patricia.c in Sources */,
+				ECB158FF20862B00007E3D1A /* TST.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
