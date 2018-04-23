@@ -8,23 +8,24 @@
 
 #include <stdio.h>
 #include "TST.h"
+#include "leitura.h"
+#include "leitura.c"
+#include "string.h"
 
 int main(int argc, const char * argv[]) {
     TSTNodePointer root = NULL;
-    insertTST(&root,"she");
-    insertTST(&root,"sells");
-    insertTST(&root,"sea");
-    insertTST(&root,"shells");
-    insertTST(&root,"by");
-    insertTST(&root,"the");
-    insertTST(&root,"sea");
-    insertTST(&root,"shore");
-    insertTST(&root,"are");
-    insertTST(&root,"surely");
-    printf("Altura: %d \n", heightTST(root));
-    printf("Nós: %d \n", nodeAmountTST(root));
-    return 0;
+    char nome[64];
+    strcpy(nome, "./dicionario.txt");
+    alimentaDicionario(nome, &root);
+    printf("n de nos: %d\n", nodeAmountTST(root));
 
-    
+    printf("TEXTO ONE ---------- \n");
+    strcpy(nome, "./texto1.txt");
+    leArquivo(nome, root);
+
+    printf("TEXTO TWO ---------- \n");
+    strcpy(nome, "./texto2.txt");
+    leArquivo(nome, root);
+
     return 0;
 }

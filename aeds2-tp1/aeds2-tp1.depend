@@ -1,0 +1,29 @@
+# depslib dependency file v1.0
+1524509402 source:c:\users\heitor\desktop\aeds2-tp1\aeds2-tp1\main.c
+	<stdio.h>
+	"TST.h"
+	"leitura.h"
+	"leitura.c"
+	"string.h"
+
+1524510323 c:\users\heitor\desktop\aeds2-tp1\aeds2-tp1\tst.h
+	<stdio.h>
+	<math.h>
+	<stdlib.h>
+
+1524508874 c:\users\heitor\desktop\aeds2-tp1\aeds2-tp1\leitura.h
+
+1524505276 source:c:\users\heitor\desktop\aeds2-tp1\aeds2-tp1\patricia.c
+	"Patricia.h"
+
+1524507083 c:\users\heitor\desktop\aeds2-tp1\aeds2-tp1\patricia.h
+	<stdio.h>
+	<stdlib.h>
+	<sys/time.h>
+
+1524505277 source:c:\users\heitor\desktop\aeds2-tp1\aeds2-tp1\tst.c
+	"TST.h"
+
+1524510318 c:\users\heitor\desktop\aeds2-tp1\aeds2-tp1\leitura.c
+	"leitura.h"
+

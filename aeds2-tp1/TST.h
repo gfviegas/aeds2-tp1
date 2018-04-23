@@ -18,7 +18,7 @@ typedef struct TSTNode* TSTNodePointer;
 
 typedef struct TSTNode {
     TSTValue data;
-    
+
     // 1 se termina uma palavra no nó
     unsigned isEndOfString: 1;
     TSTNodePointer left, eq, right;
