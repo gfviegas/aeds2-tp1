@@ -10,6 +10,7 @@
 		EC4060C8207CF43B002417A8 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = EC4060C7207CF43B002417A8 /* main.c */; };
 		EC6CC5352088D2EB00EA1627 /* Patricia.c in Sources */ = {isa = PBXBuildFile; fileRef = EC6CC5342088D2EB00EA1627 /* Patricia.c */; };
 		ECB158FF20862B00007E3D1A /* TST.c in Sources */ = {isa = PBXBuildFile; fileRef = ECB158FE20862B00007E3D1A /* TST.c */; };
+		ECD314E8209E0DB9006A9612 /* file.c in Sources */ = {isa = PBXBuildFile; fileRef = ECD314E7209E0DB9006A9612 /* file.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -35,6 +36,8 @@
 		ECB159012086397C007E3D1A /* texto1.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = texto1.txt; sourceTree = "<group>"; };
 		ECB159022086398C007E3D1A /* texto2.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = texto2.txt; sourceTree = "<group>"; };
 		ECB1590320863998007E3D1A /* texto3.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = texto3.txt; sourceTree = "<group>"; };
+		ECD314E6209E0DB9006A9612 /* file.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = file.h; sourceTree = "<group>"; };
+		ECD314E7209E0DB9006A9612 /* file.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = file.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +79,8 @@
 				ECB1590320863998007E3D1A /* texto3.txt */,
 				EC6CC5332088D2EB00EA1627 /* Patricia.h */,
 				EC6CC5342088D2EB00EA1627 /* Patricia.c */,
+				ECD314E6209E0DB9006A9612 /* file.h */,
+				ECD314E7209E0DB9006A9612 /* file.c */,
 			);
 			path = "aeds2-tp1";
 			sourceTree = "<group>";
@@ -137,6 +142,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ECD314E8209E0DB9006A9612 /* file.c in Sources */,
 				EC4060C8207CF43B002417A8 /* main.c in Sources */,
 				EC6CC5352088D2EB00EA1627 /* Patricia.c in Sources */,
 				ECB158FF20862B00007E3D1A /* TST.c in Sources */,
