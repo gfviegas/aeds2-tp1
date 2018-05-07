@@ -38,7 +38,9 @@ int Pesquisa(String k, PatriciaNodePointer t)
     if (EExterno(t))
         return (strcmp(k, t->Node.word) == 0) ? 1 : 0;
 
-    if (k[t->Node.InternNode.index] <= t->Node.InternNode.compare)
+    if (strlen(k) < t->Node.InternNode.index + 1)
+        Pesquisa(k, t->Node.InternNode.left);
+    else if (k[t->Node.InternNode.index] <= t->Node.InternNode.compare)
         Pesquisa(k, t->Node.InternNode.left);
     else
         Pesquisa(k, t->Node.InternNode.right);
