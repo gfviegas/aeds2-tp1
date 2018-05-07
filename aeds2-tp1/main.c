@@ -12,35 +12,35 @@
 #include "file.h"
 #include "string.h"
 
-int main(int argc, const char * argv[]) {
+int main()
+{
     TSTNodePointer root = NULL;
-    
-//    char nome[64];
-//    strcpy(nome, "./dicionario.txt");
-//    alimentaDicionario(nome, &root);
-//    printf("n de nos: %d\n", nodeAmountTST(root));
-//
-//    printf("TEXTO ONE ---------- \n");
-//    strcpy(nome, "./texto1.txt");
-//    leArquivo(nome, root);
-//
-//    printf("TEXTO TWO ---------- \n");
-//    strcpy(nome, "./texto2.txt");
-//    leArquivo(nome, root);
-
-    
     PatriciaNodePointer patRoot = NULL;
-    Insere("cascalho", &patRoot);
-    Insere("cascata", &patRoot);
-    Insere("casco", &patRoot);
-    Insere("dama", &patRoot);
-    Insere("domando", &patRoot);
-    Insere("dominar", &patRoot);
-    Insere("dominio", &patRoot);
-    
+
+    char nome[64];
+    strcpy(nome, "./dicionario.txt");
+    alimentaDicionario(nome, &root, &patRoot);
+    printf("n de nos: %d\n", nodeAmountTST(root));
+    printf("Altura da TST: %d\n", greaterWordTST(root));
+    printf("Altura da Patricia: %d\n\n", alturaPatricia(patRoot));
+
+    printf("TEXTO ONE ---------- \n");
+    strcpy(nome, "./texto1.txt");
+    leArquivo(nome, root, patRoot);
+
+    printf("TEXTO TWO ---------- \n");
+    strcpy(nome, "./texto2.txt");
+    leArquivo(nome, root, patRoot);
+
+    printf("TEXTO THREE ---------- \n");
+    strcpy(nome, "./texto3.txt");
+    leArquivo(nome, root, patRoot);
+
+    //printTST(root);
+    imprimePatricia(patRoot);
+
     return 0;
 }
-
 
 //int main(int argc, char *argv[])
 //{ PatriciaNodePointer a = NULL;
@@ -77,4 +77,3 @@ int main(int argc, const char * argv[]) {
 //    }
 //    return 0;
 //}
-

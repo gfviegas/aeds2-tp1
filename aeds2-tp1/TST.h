@@ -13,20 +13,26 @@
 #include <math.h>
 #include <stdlib.h>
 
+#define MAX_SIZE 50
 typedef char TSTValue;
-typedef struct TSTNode* TSTNodePointer;
+typedef struct TSTNode *TSTNodePointer;
 
-typedef struct TSTNode {
+typedef struct TSTNode
+{
     TSTValue data;
 
     // 1 se termina uma palavra no nó
-    unsigned isEndOfString: 1;
+    unsigned isEndOfString : 1;
     TSTNodePointer left, eq, right;
 } TSTNode;
 
-void insertTST(TSTNodePointer* root, char *word);
+int greaterWordTST(TSTNodePointer root);
+void greaterWordTSTtree(TSTNodePointer root, char *buffer, int i, int *bigger);
+void insertTST(TSTNodePointer *root, char *word);
 int searchTST(TSTNodePointer root, char *word);
-int max (int a, int b);
+void printTSTtree(TSTNodePointer root, char *buffer, int depth);
+void printTST(TSTNodePointer root);
+int max(int a, int b);
 
 int heightTST(TSTNodePointer root);
 int nodeAmountTST(TSTNodePointer root);

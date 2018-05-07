@@ -1,14 +1,14 @@
 tamborete
 atrapalhado
-negócio
+negï¿½cio
 pelejando
 acaso
 importar
 costas
 incomodar
-licença
+licenï¿½a
 sinistro
-difícil
+difï¿½cil
 demais
 cheio
 porque
@@ -16,7 +16,7 @@ trapalhado
 engravidar
 encantar
 agradecido
-aflição
+afliï¿½ï¿½o
 esntojo
 espiar
 burro
@@ -27,3 +27,4 @@ comportamento
 nossa
 nossa
 nu
+malandro

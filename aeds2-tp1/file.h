@@ -9,14 +9,16 @@
 #ifndef file_h
 #define file_h
 
+#include <ctype.h>
 #include <stdio.h>
 #include "TST.h"
+#include "Patricia.h"
 #include <string.h>
 #include <stdlib.h>
 
 #define BUFFERSIZE 255
 
-int alimentaDicionario(char *nomeArquivo, TSTNodePointer *TSTtree);
-int leArquivo(char *nomeArquivo, TSTNodePointer TSTtree);
+int alimentaDicionario(char *nomeArquivo, TSTNodePointer *TSTtree, PatriciaNodePointer *Pattree);
+int leArquivo(char *nomeArquivo, TSTNodePointer TSTtree, PatriciaNodePointer Pattree);
 
 #endif /* file_h */
