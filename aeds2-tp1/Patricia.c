@@ -33,17 +33,29 @@ PatriciaNodePointer CriaNoExt(String k, PatriciaNodePointer *p)
     return *p;
 }
 
-int Pesquisa(String k, PatriciaNodePointer t)
+int Pesquisa(String k, PatriciaNodePointer t, int *comparacoes)
 {
-    if (EExterno(t))
+    if (EExterno(t)) {
+        // printf("%s = %s\n", k, t->Node.word);
         return (strcmp(k, t->Node.word) == 0) ? 1 : 0;
+    }
 
-    if (strlen(k) < t->Node.InternNode.index + 1)
-        Pesquisa(k, t->Node.InternNode.left);
+    //printf("%s - (%c <= %c)\n", k, k[t->Node.InternNode.index], t->Node.InternNode.compare);
+
+    if (strlen(k) < t->Node.InternNode.index) {
+        Pesquisa(k, t->Node.InternNode.left, comparacoes);
+        (*comparacoes)++;
+    }
     else if (k[t->Node.InternNode.index] <= t->Node.InternNode.compare)
-        Pesquisa(k, t->Node.InternNode.left);
+    {
+        Pesquisa(k, t->Node.InternNode.left, comparacoes);
+        *comparacoes += 2;
+    }
     else
-        Pesquisa(k, t->Node.InternNode.right);
+    {
+        Pesquisa(k, t->Node.InternNode.right, comparacoes);
+        *comparacoes += 3;
+    }
 }
 
 PatriciaNodePointer InsereEntre(String palavra, PatriciaNodePointer *t, int i, char charDif)
@@ -196,4 +208,12 @@ void imprimePatricia(PatriciaNodePointer t)
         if (t->type == Interno)
             imprimePatricia(t->Node.InternNode.right);
     }
+}
+
+void dadosPatricia(PatriciaNodePointer t) {
+    printf("\t *** Dados da Arvore Patricia: *** \n");
+    printf("Numero de nos internos Patricia: %d\n", numeroNosPatricia(t, Interno));
+    printf("Numero de nos externos Patricia: %d\n", numeroNosPatricia(t, Externo));
+    printf("Altura da Patricia: %d\n\n", alturaPatricia(t));
+    printf("\t ********* \n");
 }

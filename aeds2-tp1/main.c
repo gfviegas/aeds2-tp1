@@ -12,6 +12,91 @@
 #include "file.h"
 #include "string.h"
 
+/**
+ Imprime um cabeçalho com instruções e descrição do programa
+ */
+void printHeader () {
+    printf("|| ||\n");
+    printf("|| ||\t NULL 1.0\n");
+    printf("|| ||\t Trabalho Prático 1 de \"Algoritmos e Estruturas de Dados\" II \n");
+    printf("|| ||\t Maio de 2018 - UFV Campus Florestal\n");
+    printf("|| ||\t Bruno Marra (3029), Gustavo Viegas (3026) e Heitor Passeado (3055)\n");
+    printf("|| ||\n");
+    printf("\nO programa irá pedir pra que você digite um código após cada operação executada. Basta digitar o código requisitado pra a operação ser executada. \n\n");
+}
+
+/**
+ Imprime instruções de códigos a serem inseridos para o programa executar
+ @return codigo da operação escolhida pelo usuário
+ */
+void imprimeInstrucoes () {
+    printf("Os códigos e operações disponíveis são: \n\n");
+    printf("Insira 1 \t->\t Ler texto 1\n");
+    printf("Insira 2 \t->\t Ler texto 2\n");
+    printf("Insira 3 \t->\t Ler texto 3\n");
+    printf("Insira 4 \t->\t Imprimir Dicionário TST\n");
+    printf("Insira 5 \t->\t Imprimir Dicionário Patricia\n");
+    printf("Insira 6 \t->\t Imprimir dados sobre a TST\n");
+    printf("Insira 7 \t->\t Imprimir dados sobre a Patricia\n");
+    
+    printf("Insira 0 \t->\t Interromper execução\n");
+}
+
+/**
+ * Lê um código e executa a ação a ela vinculada
+ * @function lerOperacao
+ * @param  dicionario          Ponteiro do tipo Dicionario que será manipulado
+ * @return                     Inteiro representando se o programa deve continuar executando (1) ou não (0)
+ */
+int lerOperacao (TSTNodePointer *tstRoot, PatriciaNodePointer *patriciaRoot) {
+    int codigo, retorno = 1;
+    char nome[150];
+
+    imprimeInstrucoes();
+
+    printf("\nInsira o código da operação que deseja executar: ");
+    scanf("%d", &codigo);
+
+    switch (codigo) {
+        case 0:
+            retorno = 0;
+            break;
+        case 1:
+            printf("Processando texto 1... \n");
+            strcpy(nome, "./texto1.txt");
+            leArquivo(nome, *tstRoot, *patriciaRoot);
+            break;
+        case 2:
+            printf("Processando texto 2... \n");
+            strcpy(nome, "./texto2.txt");
+            leArquivo(nome, *tstRoot, *patriciaRoot);
+            break;
+        case 3:
+             printf("Processando texto 3... \n");
+            strcpy(nome, "./texto3.txt");
+            leArquivo(nome, *tstRoot, *patriciaRoot);
+            break;
+        case 4:
+            printTST(*tstRoot);
+            break;
+        case 5:
+            imprimePatricia(*patriciaRoot);
+            break;
+        case 6:
+            dadosTST(*tstRoot);
+            break;
+        case 7:
+            dadosPatricia(*patriciaRoot);
+            break;
+        default:
+            printf("Código inválido!! \n");
+            lerOperacao(tstRoot, patriciaRoot);
+            break;
+    }
+
+    return retorno;
+}
+
 int main()
 {
     TSTNodePointer root = NULL;
@@ -20,26 +105,12 @@ int main()
     char nome[64];
     strcpy(nome, "./dicionario.txt");
     alimentaDicionario(nome, &root, &patRoot);
-    printf("Numero de nos TST: %d\n", nodeAmountTST(root));
-    printf("Numero de nos internos Patricia: %d\n", numeroNosPatricia(patRoot, Interno));
-    printf("Numero de nos externos Patricia: %d\n", numeroNosPatricia(patRoot, Externo));
-    printf("Altura da TST: %d\n", greaterWordTST(root));
-    printf("Altura da Patricia: %d\n\n", alturaPatricia(patRoot));
 
-    printf("TEXTO ONE ---------- \n");
-    strcpy(nome, "./texto1.txt");
-    leArquivo(nome, root, patRoot);
+    while (lerOperacao(&root, &patRoot) == 1) {
+        printf("\n\n Operação executada! \n\n");
+    }
 
-    printf("TEXTO TWO ---------- \n");
-    strcpy(nome, "./texto2.txt");
-    leArquivo(nome, root, patRoot);
-
-    printf("TEXTO THREE ---------- \n");
-    strcpy(nome, "./texto3.txt");
-    leArquivo(nome, root, patRoot);
-
-    //printTST(root);
-    //imprimePatricia(patRoot);
+    printf("\n\n Execução Interrompida! (usuário inseriu o código 0).\n");
 
     return 0;
 }

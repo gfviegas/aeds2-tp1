@@ -29,12 +29,12 @@ typedef struct TSTNode
 int greaterWordTST(TSTNodePointer root);
 void greaterWordTSTtree(TSTNodePointer root, char *buffer, int i, int *bigger);
 void insertTST(TSTNodePointer *root, char *word);
-int searchTST(TSTNodePointer root, char *word);
+int searchTST(TSTNodePointer root, char *word, int *comparacoes);
 void printTSTtree(TSTNodePointer root, char *buffer, int depth);
 void printTST(TSTNodePointer root);
 int max(int a, int b);
 
 int heightTST(TSTNodePointer root);
 int nodeAmountTST(TSTNodePointer root);
-
+void dadosTST(TSTNodePointer root);
 #endif /* TST_h */

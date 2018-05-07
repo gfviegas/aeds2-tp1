@@ -44,19 +44,24 @@ void insertTST(TSTNodePointer *root, char *word)
 }
 
 // Function to search a given word in TST
-int searchTST(TSTNodePointer root, char *word)
+int searchTST(TSTNodePointer root, char *word, int *comparacoes)
 {
     if (!root)
         return 0;
-    if (*word < (root)->data)
-        return searchTST(root->left, word);
-    else if (*word > (root)->data)
-        return searchTST(root->right, word);
+    if (*word < (root)->data) {
+        (*comparacoes)++;
+        return searchTST(root->left, word, comparacoes);
+    }
+    else if (*word > (root)->data) {
+        *comparacoes += 2;
+        return searchTST(root->right, word, comparacoes);
+    }
     else
     {
         if (*(word + 1) == '\0')
             return root->isEndOfString;
-        return searchTST(root->eq, word + 1);
+        *comparacoes += 3;
+        return searchTST(root->eq, word + 1, comparacoes);
     }
 }
 
@@ -137,4 +142,11 @@ int nodeAmountTST(TSTNodePointer root)
     if (root == NULL)
         return 0;
     return 1 + nodeAmountTST(root->left) + nodeAmountTST(root->eq) + nodeAmountTST(root->right);
+}
+
+void dadosTST(TSTNodePointer root) {
+    printf("\t *** Dados da Arvore TST: *** \n");
+    printf("Numero de nos TST: %d\n", nodeAmountTST(root));
+    printf("Altura da TST: %d\n", greaterWordTST(root));
+    printf("\t ********* \n");
 }

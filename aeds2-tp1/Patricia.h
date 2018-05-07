@@ -43,10 +43,12 @@ int alturaPatricia(PatriciaNodePointer t);
 short EExterno(PatriciaNodePointer p);
 PatriciaNodePointer CriaNoInt(int i, PatriciaNodePointer *left, PatriciaNodePointer *right, char compare);
 PatriciaNodePointer CriaNoExt(String k, PatriciaNodePointer *p);
-int Pesquisa(String k, PatriciaNodePointer t);
+int Pesquisa(String k, PatriciaNodePointer t, int *comparacoes);
 PatriciaNodePointer InsereEntre(String palavra, PatriciaNodePointer *t, int i, char charDif);
 PatriciaNodePointer Insere(String k, PatriciaNodePointer *t);
 void numeroNosPatriciaTree(PatriciaNodePointer t, int *internos, int *externos);
 int numeroNosPatricia(PatriciaNodePointer t, PatriciaNodeType tipo);
 void imprimePatricia(PatriciaNodePointer t);
+void dadosPatricia(PatriciaNodePointer t);
+
 #endif /* Patricia_h */
