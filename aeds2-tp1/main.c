@@ -20,7 +20,9 @@ int main()
     char nome[64];
     strcpy(nome, "./dicionario.txt");
     alimentaDicionario(nome, &root, &patRoot);
-    printf("n de nos: %d\n", nodeAmountTST(root));
+    printf("Numero de nos TST: %d\n", nodeAmountTST(root));
+    printf("Numero de nos internos Patricia: %d\n", numeroNosPatricia(patRoot, Interno));
+    printf("Numero de nos externos Patricia: %d\n", numeroNosPatricia(patRoot, Externo));
     printf("Altura da TST: %d\n", greaterWordTST(root));
     printf("Altura da Patricia: %d\n\n", alturaPatricia(patRoot));
 
@@ -37,7 +39,7 @@ int main()
     leArquivo(nome, root, patRoot);
 
     //printTST(root);
-    imprimePatricia(patRoot);
+    //imprimePatricia(patRoot);
 
     return 0;
 }

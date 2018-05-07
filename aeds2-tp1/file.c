@@ -33,7 +33,7 @@ int alimentaDicionario(char *nomeArquivo, TSTNodePointer *TSTtree, PatriciaNodeP
         insertTST(TSTtree, palavraAtual);
 
         //insere na Patricia
-        Insere(palavraAtual, Pattree);
+        *Pattree = Insere(palavraAtual, Pattree);
     }
 
     fclose(arquivo);
