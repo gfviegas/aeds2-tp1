@@ -8,13 +8,11 @@
 
 #include "Patricia.h"
 
-short EExterno(PatriciaNodePointer p)
-{
+short EExterno(PatriciaNodePointer p) {
     return (p->type == Externo);
 }
 
-PatriciaNodePointer CriaNoInt(int i, PatriciaNodePointer *left, PatriciaNodePointer *right, char compare)
-{
+PatriciaNodePointer CriaNoInt(int i, PatriciaNodePointer *left, PatriciaNodePointer *right, char compare) {
     PatriciaNodePointer p;
     p = (PatriciaNodePointer)malloc(sizeof(PatriciaNode));
     p->type = Interno;
@@ -25,74 +23,81 @@ PatriciaNodePointer CriaNoInt(int i, PatriciaNodePointer *left, PatriciaNodePoin
     return p;
 }
 
-PatriciaNodePointer CriaNoExt(String k, PatriciaNodePointer *p)
-{
+PatriciaNodePointer CriaNoExt(String k, PatriciaNodePointer *p) {
     *p = (PatriciaNodePointer)malloc(sizeof(PatriciaNode));
     (*p)->type = Externo;
     strcpy((*p)->Node.word, k);
     return *p;
 }
 
-int Pesquisa(String k, PatriciaNodePointer t, int *comparacoes)
-{
+int Pesquisa(String word, PatriciaNodePointer t, int *comparacoes) {
     if (EExterno(t)) {
-        // printf("%s = %s\n", k, t->Node.word);
-        return (strcmp(k, t->Node.word) == 0) ? 1 : 0;
+        if ((strcmp(word, t->Node.word) != 0)) printf("%s == %s ???\n", word, t->Node.word);
+        return (strcmp(word, t->Node.word) == 0) ? 1 : 0;
     }
 
-    //printf("%s - (%c <= %c)\n", k, k[t->Node.InternNode.index], t->Node.InternNode.compare);
+    // printf("%s - (%c <= %c)\n", word, word[t->Node.InternNode.index], t->Node.InternNode.compare);
 
-    if (strlen(k) < t->Node.InternNode.index) {
-        Pesquisa(k, t->Node.InternNode.left, comparacoes);
+    if (strlen(word) < t->Node.InternNode.index) {
         (*comparacoes)++;
-    }
-    else if (k[t->Node.InternNode.index] <= t->Node.InternNode.compare)
-    {
-        Pesquisa(k, t->Node.InternNode.left, comparacoes);
+        return Pesquisa(word, t->Node.InternNode.left, comparacoes);
+    } else if (word[t->Node.InternNode.index] < t->Node.InternNode.compare) {
         *comparacoes += 2;
-    }
-    else
-    {
-        Pesquisa(k, t->Node.InternNode.right, comparacoes);
+        return Pesquisa(word, t->Node.InternNode.left, comparacoes);
+    } else {
         *comparacoes += 3;
+        return Pesquisa(word, t->Node.InternNode.right, comparacoes);
     }
 }
 
-PatriciaNodePointer InsereEntre(String palavra, PatriciaNodePointer *t, int i, char charDif)
-{
+PatriciaNodePointer PesquisaNoInt(PatriciaNodePointer t, int index, char compara) {
+    if (EExterno(t)) {
+        return NULL;
+    }
+    
+    if (index == t->Node.InternNode.index && compara == t->Node.InternNode.compare) return t;
+    if (index < t->Node.InternNode.index || compara < t->Node.InternNode.compare) return PesquisaNoInt(t->Node.InternNode.left, index, compara);
+    if (index < t->Node.InternNode.index || compara < t->Node.InternNode.compare) return PesquisaNoInt(t->Node.InternNode.right, index, compara);
+    
+    return NULL;
+}
+
+PatriciaNodePointer InsereEntre(String word, PatriciaNodePointer *tree, int index, char differentChar) {
     PatriciaNodePointer novoNoExt = NULL;
+    PatriciaNodePointer noInterno = NULL;
 
-    if (EExterno(*t))
-    {
-        CriaNoExt(palavra, &novoNoExt);
+    noInterno = PesquisaNoInt(*tree, index, differentChar);
 
-        if (strcmp((*t)->Node.word, palavra) < 0)
-            return (CriaNoInt(i, t, &novoNoExt, (*t)->Node.word[i]));
-        else
-            return (CriaNoInt(i, &novoNoExt, t, palavra[i]));
-    }
-
-    /**
-     * Trecho da função baseado no trio - Vitor Luís, Lucas Duarte e Vinícius Gabriel
-     * Copyright © 2018 UFV Florestal. All rights reserved.
-     */
-    else if (i < (*t)->Node.InternNode.index)
-    {
-        /* Cria um novo no externo */
-        CriaNoExt(palavra, &novoNoExt);
-        if (palavra[i] < charDif)
-            return (CriaNoInt(i, t, &novoNoExt, charDif));
-        else
-            return (CriaNoInt(i, &novoNoExt, t, charDif));
-    }
-    else
-    {
-        if ((*t)->Node.InternNode.compare <= palavra[(*t)->Node.InternNode.index])
-            (*t)->Node.InternNode.right = InsereEntre(palavra, &(*t)->Node.InternNode.right, i, charDif);
-        else
-            (*t)->Node.InternNode.left = InsereEntre(palavra, &(*t)->Node.InternNode.left, i, charDif);
-
-        return (*t);
+    if (EExterno(*tree)) {
+        CriaNoExt(word, &novoNoExt);
+        
+        if (strcmp((*tree)->Node.word, word) < 0) {
+            return (CriaNoInt(index, tree, &novoNoExt, differentChar));
+        } else if (strcmp((*tree)->Node.word, word) > 0) {
+            return (CriaNoInt(index, &novoNoExt, tree, differentChar));
+        }
+            
+        return NULL;
+    } else if (index < (*tree)->Node.InternNode.index) {
+        //        printf("CHAMOU CRIA NO INTERNO EM %s. -> %d / %d || %c \ %c \n", word, index, (*tree)->Node.InternNode.index, word[index], differentChar);
+        CriaNoExt(word, &novoNoExt);
+        
+        if (word[index] < differentChar) {
+            return (CriaNoInt(index, &novoNoExt, tree, differentChar));
+        } else {
+            return (CriaNoInt(index, tree, &novoNoExt, differentChar));
+        }
+    } else {
+        int indexChanged = (*tree)->Node.InternNode.index;
+        // printf("CHAMADA RECURSIVA PRA PALAVRA %s. Difere em %d / %c \n", word, indexChanged, differentChar);
+        
+        if (word[indexChanged] < (*tree)->Node.InternNode.compare) {
+            (*tree)->Node.InternNode.left = InsereEntre(word, &(*tree)->Node.InternNode.left, index, differentChar);
+        } else {
+            (*tree)->Node.InternNode.right = InsereEntre(word, &(*tree)->Node.InternNode.right, index, differentChar);
+        }
+        
+        return (*tree);
     }
 }
 
@@ -118,13 +123,10 @@ PatriciaNodePointer Insere(String k, PatriciaNodePointer *t)
                 p = p->Node.InternNode.left;
         }
 
-        if (strcmp(p->Node.word, k) == 0)
-        {
+        if (strcmp(p->Node.word, k) == 0) {
             printf("Erro; chave ja na arvore \n");
             return (*t);
-        }
-        else
-        {
+        } else {
             /**
              * Trecho da função baseado no trio - Vitor Luís, Lucas Duarte e Vinícius Gabriel
              * Copyright © 2018 UFV Florestal. All rights reserved.
@@ -133,23 +135,19 @@ PatriciaNodePointer Insere(String k, PatriciaNodePointer *t)
             // verifica qual palavra é a menor
             int lowerSize = (strlen(k) < strlen(p->Node.word)) ? strlen(k) : strlen(p->Node.word);
 
-            for (i = 0; i <= lowerSize; i++)
-            {
-                if (k[i] != p->Node.word[i])
-                {
-                    if (k[i] < p->Node.word[i])
-                    {
+            for (i = 0; i <= lowerSize; i++) {
+                if (k[i] != p->Node.word[i]) {
+                    if (k[i] < p->Node.word[i]) {
                         charDif = p->Node.word[i];
                         break;
-                    }
-                    else
-                    {
+                    } else {
                         charDif = k[i];
                         break;
                     }
                 }
             }
 
+            //            printf("\t %s. \n\n", k);
             return InsereEntre(k, t, i, charDif);
         }
     }

@@ -16,6 +16,9 @@
 #define D 8 /* depende de String */
 #define MAX_SIZE 50
 
+#include "TST.h"
+#include "Patricia.h"
+
 typedef char String[MAX_SIZE]; /* a definir, dependendo da aplicacao */
 typedef short StringIndex;
 typedef unsigned char TipoDib;
@@ -50,5 +53,8 @@ void numeroNosPatriciaTree(PatriciaNodePointer t, int *internos, int *externos);
 int numeroNosPatricia(PatriciaNodePointer t, PatriciaNodeType tipo);
 void imprimePatricia(PatriciaNodePointer t);
 void dadosPatricia(PatriciaNodePointer t);
+void processarTST(FILE *arquivo, TSTNodePointer TSTtree);
+void processarPatricia(FILE *arquivo, PatriciaNodePointer Pattree);
+
 
 #endif /* Patricia_h */

@@ -27,7 +27,6 @@ void printHeader () {
 
 /**
  Imprime instruções de códigos a serem inseridos para o programa executar
- @return codigo da operação escolhida pelo usuário
  */
 void imprimeInstrucoes () {
     printf("Os códigos e operações disponíveis são: \n\n");
@@ -45,7 +44,6 @@ void imprimeInstrucoes () {
 /**
  * Lê um código e executa a ação a ela vinculada
  * @function lerOperacao
- * @param  dicionario          Ponteiro do tipo Dicionario que será manipulado
  * @return                     Inteiro representando se o programa deve continuar executando (1) ou não (0)
  */
 int lerOperacao (TSTNodePointer *tstRoot, PatriciaNodePointer *patriciaRoot) {

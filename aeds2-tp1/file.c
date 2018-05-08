@@ -8,20 +8,17 @@
 
 #include "file.h"
 
-int alimentaDicionario(char *nomeArquivo, TSTNodePointer *TSTtree, PatriciaNodePointer *Pattree)
-{
-    char palavraAtual[50]; // Armazenar· a palavra atual em cada iteraÁ„o
+int alimentaDicionario(char *nomeArquivo, TSTNodePointer *TSTtree, PatriciaNodePointer *Pattree) {
+    char palavraAtual[50]; // Armazenar· a palavra atual em cada iteração
     FILE *arquivo = NULL;  // Arquivo TXT lido
     arquivo = fopen(nomeArquivo, "r");
 
-    if (arquivo == NULL)
-    {
+    if (arquivo == NULL) {
         printf("O arquivo %s nao existe. Encerrando a execucao. \n", nomeArquivo);
         return 0;
     }
 
-    while (1)
-    {
+    while (1) {
         fscanf(arquivo, "%s", palavraAtual);
         if (fgetc(arquivo) == EOF)
             break;
@@ -40,25 +37,6 @@ int alimentaDicionario(char *nomeArquivo, TSTNodePointer *TSTtree, PatriciaNodeP
     return 1;
 }
 
-int leArquivo(char *nomeArquivo, TSTNodePointer TSTtree, PatriciaNodePointer Pattree)
-{
-    FILE *arquivo = NULL;                                                     // Arquivo TXT lido
-    arquivo = fopen(nomeArquivo, "r");
-
-    if (arquivo == NULL)
-    {
-        printf("O arquivo %s nao existe. Encerrando a execucao. \n", nomeArquivo);
-        return 0;
-    }
-
-    processarTST(arquivo, TSTtree);
-    arquivo = fopen(nomeArquivo, "r");
-    processarPatricia(arquivo, Pattree);
-
-    fclose(arquivo);
-    return 1;
-}
-
 void processarTST(FILE *arquivo, TSTNodePointer TSTtree) {
     int notFound = 0, greaterWordNotFound = 0, greaterWordFound = 0, total = 0;
     int comparacoesSucesso = 0;
@@ -67,21 +45,17 @@ void processarTST(FILE *arquivo, TSTNodePointer TSTtree) {
     char palavraAtual[MAX_SIZE], wordFound[MAX_SIZE], wordNotFound[MAX_SIZE]; // Armazenar· a palavra atual em cada iteraÁ„o
 
     printf("|||| ARVORE TST ||||\n\n");
-    while (1)
-    {
+    while (1) {
         fscanf(arquivo, "%s", palavraAtual);
-        if (fgetc(arquivo) == EOF)
-            break;
+        if (fgetc(arquivo) == EOF) break;
 
         for (int i = 0; i < strlen(palavraAtual); i++)
             palavraAtual[i] = tolower(palavraAtual[i]);
 
         comparacoes = 0;
 
-        if (!searchTST(TSTtree, palavraAtual, &comparacoes))
-        {
-            if (strlen(palavraAtual) > greaterWordNotFound)
-            {
+        if (!searchTST(TSTtree, palavraAtual, &comparacoes)) {
+            if (strlen(palavraAtual) > greaterWordNotFound) {
                 greaterWordNotFound = strlen(palavraAtual);
                 strcpy(wordNotFound, palavraAtual);
             }
@@ -89,11 +63,8 @@ void processarTST(FILE *arquivo, TSTNodePointer TSTtree) {
             printf("-- Palavra %s nao foi encontrada --\n", palavraAtual);
             notFound++;
             comparacoesSucesso += comparacoes;
-        }
-        else
-        {
-            if (strlen(palavraAtual) > greaterWordFound)
-            {
+        } else {
+            if (strlen(palavraAtual) > greaterWordFound) {
                 strcpy(wordFound, palavraAtual);
                 greaterWordFound = strlen(palavraAtual);
             }
@@ -124,19 +95,15 @@ void processarPatricia(FILE *arquivo, PatriciaNodePointer Pattree) {
     char palavraAtual[MAX_SIZE], wordFound[MAX_SIZE], wordNotFound[MAX_SIZE]; // Armazenar· a palavra atual em cada iteraÁ„o
 
     printf("|||| ARVORE PATRICIA ||||\n\n");
-    while (1)
-    {
+    while (1) {
         fscanf(arquivo, "%s", palavraAtual);
-        if (fgetc(arquivo) == EOF)
-            break;
+        if (fgetc(arquivo) == EOF) break;
 
         for (int i = 0; i < strlen(palavraAtual); i++)
             palavraAtual[i] = tolower(palavraAtual[i]);
 
-        if (!Pesquisa(palavraAtual, Pattree, &comparacoes))
-        {
-            if (strlen(palavraAtual) > greaterWordNotFound)
-            {
+        if (!Pesquisa(palavraAtual, Pattree, &comparacoes)) {
+            if (strlen(palavraAtual) > greaterWordNotFound) {
                 greaterWordNotFound = strlen(palavraAtual);
                 strcpy(wordNotFound, palavraAtual);
             }
@@ -145,11 +112,8 @@ void processarPatricia(FILE *arquivo, PatriciaNodePointer Pattree) {
 
             comparacoesSucesso += comparacoes;
             notFound++;
-        }
-        else
-        {
-            if (strlen(palavraAtual) > greaterWordFound)
-            {
+        } else {
+            if (strlen(palavraAtual) > greaterWordFound) {
                 strcpy(wordFound, palavraAtual);
                 greaterWordFound = strlen(palavraAtual);
             }
@@ -169,4 +133,21 @@ void processarPatricia(FILE *arquivo, PatriciaNodePointer Pattree) {
         printf("Maior palavra procurada e nao encontrada: %d - %s \n", greaterWordNotFound, wordNotFound);
     printf("Foram feitas %d comparacoes pra pesquisas com sucesso e %d pra pesquisas sem sucesso.\n", comparacoesSucesso, comparacoesInsucesso);
     printf("\n\n");
+}
+
+int leArquivo(char *nomeArquivo, TSTNodePointer TSTtree, PatriciaNodePointer Pattree) {
+    FILE *arquivo = NULL;                                                     // Arquivo TXT lido
+    arquivo = fopen(nomeArquivo, "r");
+    
+    if (arquivo == NULL) {
+        printf("O arquivo %s nao existe. Encerrando a execucao. \n", nomeArquivo);
+        return 0;
+    }
+    
+    processarTST(arquivo, TSTtree);
+    arquivo = fopen(nomeArquivo, "r");
+    processarPatricia(arquivo, Pattree);
+    
+    fclose(arquivo);
+    return 1;
 }
