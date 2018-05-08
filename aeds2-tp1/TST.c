@@ -44,24 +44,26 @@ void insertTST(TSTNodePointer *root, char *word)
 }
 
 // Function to search a given word in TST
-int searchTST(TSTNodePointer root, char *word, int *comparacoes)
-{
+int searchTST(TSTNodePointer root, char *word, int *comparacoes, int *altura) {
     if (!root)
         return 0;
+    
+    (*altura)++;
+
     if (*word < (root)->data) {
         (*comparacoes)++;
-        return searchTST(root->left, word, comparacoes);
+        return searchTST(root->left, word, comparacoes, altura);
     }
     else if (*word > (root)->data) {
         *comparacoes += 2;
-        return searchTST(root->right, word, comparacoes);
+        return searchTST(root->right, word, comparacoes, altura);
     }
     else
     {
         if (*(word + 1) == '\0')
             return root->isEndOfString;
         *comparacoes += 3;
-        return searchTST(root->eq, word + 1, comparacoes);
+        return searchTST(root->eq, word + 1, comparacoes, altura);
     }
 }
 

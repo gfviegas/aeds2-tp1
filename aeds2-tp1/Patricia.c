@@ -30,23 +30,21 @@ PatriciaNodePointer CriaNoExt(String k, PatriciaNodePointer *p) {
     return *p;
 }
 
-int Pesquisa(String word, PatriciaNodePointer t, int *comparacoes) {
+int Pesquisa(String word, PatriciaNodePointer t, int *comparacoes, int *altura) {
+    (*altura)++;
     if (EExterno(t)) {
-        if ((strcmp(word, t->Node.word) != 0)) printf("%s == %s ???\n", word, t->Node.word);
         return (strcmp(word, t->Node.word) == 0) ? 1 : 0;
     }
 
-    // printf("%s - (%c <= %c)\n", word, word[t->Node.InternNode.index], t->Node.InternNode.compare);
-
     if (strlen(word) < t->Node.InternNode.index) {
         (*comparacoes)++;
-        return Pesquisa(word, t->Node.InternNode.left, comparacoes);
+        return Pesquisa(word, t->Node.InternNode.left, comparacoes, altura);
     } else if (word[t->Node.InternNode.index] < t->Node.InternNode.compare) {
         *comparacoes += 2;
-        return Pesquisa(word, t->Node.InternNode.left, comparacoes);
+        return Pesquisa(word, t->Node.InternNode.left, comparacoes, altura);
     } else {
         *comparacoes += 3;
-        return Pesquisa(word, t->Node.InternNode.right, comparacoes);
+        return Pesquisa(word, t->Node.InternNode.right, comparacoes, altura);
     }
 }
 

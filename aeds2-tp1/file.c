@@ -41,96 +41,107 @@ void processarTST(FILE *arquivo, TSTNodePointer TSTtree) {
     int notFound = 0, greaterWordNotFound = 0, greaterWordFound = 0, total = 0;
     int comparacoesSucesso = 0;
     int comparacoesInsucesso = 0;
-    int comparacoes = 0;
-    char palavraAtual[MAX_SIZE], wordFound[MAX_SIZE], wordNotFound[MAX_SIZE]; // Armazenar· a palavra atual em cada iteraÁ„o
+    int comparacoes;
+    
+    int maiorAlturaSucesso = 0;
+    int maiorAlturaInsucesso = 0;
+    int altura;
+
+    char palavraAtual[MAX_SIZE], wordFound[MAX_SIZE], wordNotFound[MAX_SIZE];
 
     printf("|||| ARVORE TST ||||\n\n");
     while (1) {
+        comparacoes = 0;
+        altura = 0;
+
         fscanf(arquivo, "%s", palavraAtual);
         if (fgetc(arquivo) == EOF) break;
 
         for (int i = 0; i < strlen(palavraAtual); i++)
             palavraAtual[i] = tolower(palavraAtual[i]);
 
-        comparacoes = 0;
-
-        if (!searchTST(TSTtree, palavraAtual, &comparacoes)) {
-            if (strlen(palavraAtual) > greaterWordNotFound) {
-                greaterWordNotFound = strlen(palavraAtual);
-                strcpy(wordNotFound, palavraAtual);
-            }
-
+        if (!searchTST(TSTtree, palavraAtual, &comparacoes, &altura)) {
             printf("-- Palavra %s nao foi encontrada --\n", palavraAtual);
+
+            if (altura > maiorAlturaInsucesso) {
+                strcpy(wordNotFound, palavraAtual);
+                maiorAlturaInsucesso = altura;
+            }
             notFound++;
-            comparacoesSucesso += comparacoes;
+            comparacoesInsucesso += comparacoes;
         } else {
-            if (strlen(palavraAtual) > greaterWordFound) {
+            if (altura > maiorAlturaSucesso) {
                 strcpy(wordFound, palavraAtual);
-                greaterWordFound = strlen(palavraAtual);
+                maiorAlturaSucesso = altura;
             }
 
-            comparacoesInsucesso += comparacoes;
+            comparacoesSucesso += comparacoes;
         }
-
-        printf("Foram feitas %d comparações para pesquisar essa palavra. \n", comparacoes);
         total++;
     }
 
     printf("Total de palavras no texto: %d \n", total);
     printf("Nao foram encontradas %d palavras \n", notFound);
-    if (greaterWordFound)
-        printf("Maior palavra procurada encontrada: %d - %s \n", greaterWordFound, wordFound);
-    if (greaterWordNotFound)
-        printf("Maior palavra procurada e nao encontrada: %d - %s \n", greaterWordNotFound, wordNotFound);
+    if (maiorAlturaSucesso)
+        printf("Altura da maior palavra procurada encontrada: %d - %s \n", maiorAlturaSucesso, wordFound);
+    if (maiorAlturaInsucesso)
+        printf("Altura da maior palavra procurada e nao encontrada: %d - %s \n", maiorAlturaInsucesso, wordNotFound);
     printf("Foram feitas %d comparacoes pra pesquisas com sucesso e %d pra pesquisas sem sucesso.\n", comparacoesSucesso, comparacoesInsucesso);
     printf("\n\n");
 
 }
 
 void processarPatricia(FILE *arquivo, PatriciaNodePointer Pattree) {
-    int notFound = 0, greaterWordNotFound = 0, greaterWordFound = 0, total = 0;
+    int total = 0;
+    int notFound = 0;
+    
     int comparacoesSucesso = 0;
     int comparacoesInsucesso = 0;
-    int comparacoes = 0;
+    int comparacoes;
+    
+    int maiorAlturaSucesso = 0;
+    int maiorAlturaInsucesso = 0;
+    int altura;
+    
     char palavraAtual[MAX_SIZE], wordFound[MAX_SIZE], wordNotFound[MAX_SIZE]; // Armazenar· a palavra atual em cada iteraÁ„o
 
     printf("|||| ARVORE PATRICIA ||||\n\n");
     while (1) {
+        comparacoes = 0;
+        altura = 0;
+        
         fscanf(arquivo, "%s", palavraAtual);
         if (fgetc(arquivo) == EOF) break;
 
         for (int i = 0; i < strlen(palavraAtual); i++)
             palavraAtual[i] = tolower(palavraAtual[i]);
 
-        if (!Pesquisa(palavraAtual, Pattree, &comparacoes)) {
-            if (strlen(palavraAtual) > greaterWordNotFound) {
-                greaterWordNotFound = strlen(palavraAtual);
-                strcpy(wordNotFound, palavraAtual);
-            }
-
+        if (!Pesquisa(palavraAtual, Pattree, &comparacoes, &altura)) {
             printf("-- Palavra %s nao foi encontrada --\n", palavraAtual);
 
-            comparacoesSucesso += comparacoes;
+            if (altura > maiorAlturaInsucesso) {
+                strcpy(wordNotFound, palavraAtual);
+                maiorAlturaInsucesso = altura;
+            }
+            comparacoesInsucesso += comparacoes;
             notFound++;
         } else {
-            if (strlen(palavraAtual) > greaterWordFound) {
+            if (altura > maiorAlturaSucesso) {
                 strcpy(wordFound, palavraAtual);
-                greaterWordFound = strlen(palavraAtual);
+                maiorAlturaSucesso = altura;
             }
-
-            comparacoesInsucesso += comparacoes;
+            comparacoesSucesso += comparacoes;
         }
 
-        printf("Foram feitas %d comparações para pesquisar essa palavra. \n", comparacoes);
         total++;
     }
 
     printf("Total de palavras no texto: %d \n", total);
     printf("Nao foram encontradas %d palavras \n", notFound);
-    if (greaterWordFound)
-        printf("Maior palavra procurada encontrada: %d - %s \n", greaterWordFound, wordFound);
-    if (greaterWordNotFound)
-        printf("Maior palavra procurada e nao encontrada: %d - %s \n", greaterWordNotFound, wordNotFound);
+    if (maiorAlturaSucesso)
+        printf("Altura da maior palavra procurada encontrada: %d - %s \n", maiorAlturaSucesso, wordFound);
+    if (maiorAlturaInsucesso)
+        printf("Altura da maior palavra procurada e nao encontrada: %d - %s \n", maiorAlturaInsucesso, wordNotFound);
     printf("Foram feitas %d comparacoes pra pesquisas com sucesso e %d pra pesquisas sem sucesso.\n", comparacoesSucesso, comparacoesInsucesso);
     printf("\n\n");
 }
