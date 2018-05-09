@@ -21,10 +21,9 @@
 
 typedef char String[MAX_SIZE]; /* a definir, dependendo da aplicacao */
 typedef short StringIndex;
-typedef unsigned char TipoDib;
 typedef enum {
-    Interno,
-    Externo
+    Internal,
+    External
 } PatriciaNodeType;
 typedef struct PatriciaNode *PatriciaNodePointer;
 typedef struct PatriciaNode
@@ -42,19 +41,19 @@ typedef struct PatriciaNode
     } Node;
 } PatriciaNode;
 
-int alturaPatricia(PatriciaNodePointer t);
-short EExterno(PatriciaNodePointer p);
-PatriciaNodePointer CriaNoInt(int i, PatriciaNodePointer *left, PatriciaNodePointer *right, char compare);
-PatriciaNodePointer CriaNoExt(String k, PatriciaNodePointer *p);
-int Pesquisa(String k, PatriciaNodePointer t, int *comparacoes, int *altura);
+int heightPatricia(PatriciaNodePointer t);
+short isExternal(PatriciaNodePointer p);
+PatriciaNodePointer createInternalNodePatricia(int i, PatriciaNodePointer *left, PatriciaNodePointer *right, char compare);
+PatriciaNodePointer createExternalNodePatricia(String k, PatriciaNodePointer *p);
+int searchPatricia(String k, PatriciaNodePointer t, int *comparisons, int *height);
 PatriciaNodePointer InsereEntre(String palavra, PatriciaNodePointer *t, int i, char charDif);
 PatriciaNodePointer Insere(String k, PatriciaNodePointer *t);
-void numeroNosPatriciaTree(PatriciaNodePointer t, int *internos, int *externos);
-int numeroNosPatricia(PatriciaNodePointer t, PatriciaNodeType tipo);
-void imprimePatricia(PatriciaNodePointer t);
-void dadosPatricia(PatriciaNodePointer t);
-void processarTST(FILE *arquivo, TSTNodePointer TSTtree);
-void processarPatricia(FILE *arquivo, PatriciaNodePointer Pattree);
+void nodeCountPatricia(PatriciaNodePointer t, int *internos, int *externos);
+int nodeAmmountPatricia(PatriciaNodePointer t, PatriciaNodeType tipo);
+void printPatricia(PatriciaNodePointer t);
+void statsPatricia(PatriciaNodePointer t);
+void proccessTST(FILE *loadedFile, TSTNodePointer treeTST);
+void proccessPatricia(FILE *loadedFile, PatriciaNodePointer treePatricia);
 
 
 #endif /* Patricia_h */

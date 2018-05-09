@@ -2,7 +2,7 @@
 //  main.c
 //  aeds2-tp1
 //
-//  Created by Gustavo Viegas on 10/04/18.
+//  Created by  Bruno Marra (3029), Gustavo Viegas (3026) e Heitor Passeado (3055) on 10/04/18.
 //  Copyright © 2018 UFV Florestal. All rights reserved.
 //
 
@@ -28,7 +28,7 @@ void printHeader () {
 /**
  Imprime instruções de códigos a serem inseridos para o programa executar
  */
-void imprimeInstrucoes () {
+void printInstructions () {
     printf("Os códigos e operações disponíveis são: \n\n");
     printf("Insira 1 \t->\t Ler texto 1\n");
     printf("Insira 2 \t->\t Ler texto 2\n");
@@ -43,68 +43,67 @@ void imprimeInstrucoes () {
 
 /**
  * Lê um código e executa a ação a ela vinculada
- * @function lerOperacao
+ * @function readOperation
  * @return                     Inteiro representando se o programa deve continuar executando (1) ou não (0)
  */
-int lerOperacao (TSTNodePointer *tstRoot, PatriciaNodePointer *patriciaRoot) {
-    int codigo, retorno = 1;
-    char nome[150];
+int readOperation (TSTNodePointer *tstRoot, PatriciaNodePointer *patriciaRoot) {
+    int code, returnValue = 1;
+    char filePath[150];
 
-    imprimeInstrucoes();
+    printInstructions();
 
     printf("\nInsira o código da operação que deseja executar: ");
-    scanf("%d", &codigo);
+    scanf("%d", &code);
 
-    switch (codigo) {
+    switch (code) {
         case 0:
-            retorno = 0;
+            returnValue = 0;
             break;
         case 1:
             printf("Processando texto 1... \n");
-            strcpy(nome, "./texto1.txt");
-            leArquivo(nome, *tstRoot, *patriciaRoot);
+            strcpy(filePath, "./texto1.txt");
+            readFile(filePath, *tstRoot, *patriciaRoot);
             break;
         case 2:
             printf("Processando texto 2... \n");
-            strcpy(nome, "./texto2.txt");
-            leArquivo(nome, *tstRoot, *patriciaRoot);
+            strcpy(filePath, "./texto2.txt");
+            readFile(filePath, *tstRoot, *patriciaRoot);
             break;
         case 3:
              printf("Processando texto 3... \n");
-            strcpy(nome, "./texto3.txt");
-            leArquivo(nome, *tstRoot, *patriciaRoot);
+            strcpy(filePath, "./texto3.txt");
+            readFile(filePath, *tstRoot, *patriciaRoot);
             break;
         case 4:
             printTST(*tstRoot);
             break;
         case 5:
-            imprimePatricia(*patriciaRoot);
+            printPatricia(*patriciaRoot);
             break;
         case 6:
-            dadosTST(*tstRoot);
+            statsTST(*tstRoot);
             break;
         case 7:
-            dadosPatricia(*patriciaRoot);
+            statsPatricia(*patriciaRoot);
             break;
         default:
             printf("Código inválido!! \n");
-            lerOperacao(tstRoot, patriciaRoot);
+            readOperation(tstRoot, patriciaRoot);
             break;
     }
 
-    return retorno;
+    return returnValue;
 }
 
-int main()
-{
-    TSTNodePointer root = NULL;
-    PatriciaNodePointer patRoot = NULL;
+int main() {
+    TSTNodePointer rootTST = NULL;
+    PatriciaNodePointer rootPatricia = NULL;
 
-    char nome[64];
-    strcpy(nome, "./dicionario.txt");
-    alimentaDicionario(nome, &root, &patRoot);
+    char filePath[64];
+    strcpy(filePath, "./dicionario.txt");
+    feedDictionary(filePath, &rootTST, &rootPatricia);
 
-    while (lerOperacao(&root, &patRoot) == 1) {
+    while (readOperation(&rootTST, &rootPatricia) == 1) {
         printf("\n\n Operação executada! \n\n");
     }
 
@@ -112,39 +111,3 @@ int main()
 
     return 0;
 }
-
-//int main(int argc, char *argv[])
-//{ PatriciaNodePointer a = NULL;
-//    String c;
-//    int  i, j, k, n;
-//    int  min = 32, max = 126;
-//    String vetor[95];
-//    /* Gera uma permutacao aleatoria de chaves dos caracteres ASCII 32 a  126 */
-//    struct timeval semente;
-//    gettimeofday(&semente,NULL);
-//    srand((int)(semente.tv_sec + 1000000 * semente.tv_usec));
-//    for (i = min; i <= max; i++)
-//    vetor[i - 32] = i;
-//    for (i = min; i <= max; i++)
-//    { k = min + (int) ((float)(max - min) * rand()/(RAND_MAX + 1.0));
-//        j = min + (int) ((float)(max - min) * rand()/(RAND_MAX + 1.0));
-//        n = vetor[k - 32]; vetor[k - 32] = vetor[j - 32]; vetor[j - 32] = n;
-//    }
-//    /* Insere cada chave na arvore */
-//    for (i = min; i <= max; i++)
-//    { c = vetor[i - 32]; printf("Inserindo chave: %c\n", c);
-//        a = Insere(c, &a);
-//    }
-//    /* Gera outra permutacao aleatoria de chaves */
-//    for (i = min; i <= max; i++)
-//    { k = min + (int) ((float)(max-min) * rand()/(RAND_MAX + 1.0));
-//        j = min + (int) ((float)(max-min) * rand()/(RAND_MAX + 1.0));
-//        n = vetor[k - 32]; vetor[k - 32] = vetor[j - 32]; vetor[j - 32] = n;
-//    }
-//    /* Pesquisa cada chave na arvore */
-//    for (i = min; i <= max; i++)
-//    { c = vetor[i - 32]; printf("Pesquisando chave: %c\n", c);
-//        Pesquisa(c, a);
-//    }
-//    return 0;
-//}

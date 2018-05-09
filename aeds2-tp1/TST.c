@@ -9,7 +9,7 @@
 #include "TST.h"
 
 // A utility function to create a new ternary search tree TSTNode
-TSTNodePointer newNode(char data)
+TSTNodePointer createNodeTST(char data)
 {
     TSTNodePointer temp = (TSTNodePointer)malloc(sizeof(TSTNode));
     temp->data = data;
@@ -19,24 +19,24 @@ TSTNodePointer newNode(char data)
 }
 
 // Function to insert a new word in a Ternary Search Tree
-void insertTST(TSTNodePointer *root, char *word)
+void insertNodeTST(TSTNodePointer *root, char *word)
 {
     // Base Case: Tree is empty
     if (!(*root))
-        *root = newNode(*word);
+        *root = createNodeTST(*word);
     // If current character of word is smaller than root's character,
     // then insert this word in left subtree of root
     if ((*word) < (*root)->data)
-        insertTST(&((*root)->left), word);
+        insertNodeTST(&((*root)->left), word);
     // If current character of word is greate than root's character,
     // then insert this word in right subtree of root
     else if ((*word) > (*root)->data)
-        insertTST(&((*root)->right), word);
+        insertNodeTST(&((*root)->right), word);
     // If current character of word is same as root's character,
     else
     {
         if (*(word + 1))
-            insertTST(&((*root)->eq), word + 1);
+            insertNodeTST(&((*root)->eq), word + 1);
         else
             // the last character of the word
             (*root)->isEndOfString = 1;
@@ -44,36 +44,36 @@ void insertTST(TSTNodePointer *root, char *word)
 }
 
 // Function to search a given word in TST
-int searchTST(TSTNodePointer root, char *word, int *comparacoes, int *altura) {
+int searchTST(TSTNodePointer root, char *word, int *comparisons, int *height) {
     if (!root)
         return 0;
     
-    (*altura)++;
+    (*height)++;
 
     if (*word < (root)->data) {
-        (*comparacoes)++;
-        return searchTST(root->left, word, comparacoes, altura);
+        (*comparisons)++;
+        return searchTST(root->left, word, comparisons, height);
     }
     else if (*word > (root)->data) {
-        *comparacoes += 2;
-        return searchTST(root->right, word, comparacoes, altura);
+        *comparisons += 2;
+        return searchTST(root->right, word, comparisons, height);
     }
     else
     {
         if (*(word + 1) == '\0')
             return root->isEndOfString;
-        *comparacoes += 3;
-        return searchTST(root->eq, word + 1, comparacoes, altura);
+        *comparisons += 3;
+        return searchTST(root->eq, word + 1, comparisons, height);
     }
 }
 
 // A recursive function to traverse Ternary Search Tree
-void printTSTtree(TSTNodePointer root, char *buffer, int i)
+void printTSTSubtree(TSTNodePointer root, char *buffer, int i)
 {
     if (root)
     {
         // First traverse the left subtree
-        printTSTtree(root->left, buffer, i);
+        printTSTSubtree(root->left, buffer, i);
         // Store the character of this node
         buffer[i] = root->data;
         if (root->isEndOfString)
@@ -82,46 +82,19 @@ void printTSTtree(TSTNodePointer root, char *buffer, int i)
             printf("%s\n", buffer);
         }
         // Traverse the subtree using equal pointer (middle subtree)
-        printTSTtree(root->eq, buffer, i + 1);
+        printTSTSubtree(root->eq, buffer, i + 1);
         // Finally Traverse the right subtree
-        printTSTtree(root->right, buffer, i);
+        printTSTSubtree(root->right, buffer, i);
     }
 }
 
-void greaterWordTSTtree(TSTNodePointer root, char *buffer, int i, int *bigger)
-{
-    if (root)
-    {
-        // First traverse the left subtree
-        greaterWordTSTtree(root->left, buffer, i, bigger);
-        // Store the character of this node
-        buffer[i] = root->data;
-        if (root->isEndOfString)
-        {
-            if (i > *bigger)
-                *bigger = i;
-        }
-        // Traverse the subtree using equal pointer (middle subtree)
-        greaterWordTSTtree(root->eq, buffer, i + 1, bigger);
-        // Finally Traverse the right subtree
-        greaterWordTSTtree(root->right, buffer, i, bigger);
-    }
-}
-
-int greaterWordTST(TSTNodePointer root)
-{
-    int bigger = 0;
-    char buffer[MAX_SIZE];
-    greaterWordTSTtree(root, buffer, 0, &bigger);
-    return bigger;
-}
 
 // The main function to traverse a Ternary Search Tree.
 // It mainly uses traverseTSTUtil()
 void printTST(TSTNodePointer root)
 {
     char buffer[MAX_SIZE];
-    printTSTtree(root, buffer, 0);
+    printTSTSubtree(root, buffer, 0);
 }
 
 int max(int a, int b)
@@ -146,7 +119,7 @@ int nodeAmountTST(TSTNodePointer root)
     return 1 + nodeAmountTST(root->left) + nodeAmountTST(root->eq) + nodeAmountTST(root->right);
 }
 
-void dadosTST(TSTNodePointer root) {
+void statsTST(TSTNodePointer root) {
     printf("\t *** Dados da Arvore TST: *** \n");
     printf("Numero de nos TST: %d\n", nodeAmountTST(root));
     printf("Altura da TST: %d\n", greaterWordTST(root));

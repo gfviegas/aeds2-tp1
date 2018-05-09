@@ -2,135 +2,138 @@
 //  file.c
 //  aeds2-tp1
 //
-//  Created by Gustavo Viegas on 05/05/18.
+//  Created by  Bruno Marra (3029), Gustavo Viegas (3026) e Heitor Passeado (3055) on 10/04/18.
 //  Copyright © 2018 UFV Florestal. All rights reserved.
 //
 
 #include "file.h"
 
-int alimentaDicionario(char *nomeArquivo, TSTNodePointer *TSTtree, PatriciaNodePointer *Pattree) {
-    char palavraAtual[50]; // Armazenar· a palavra atual em cada iteração
-    FILE *arquivo = NULL;  // Arquivo TXT lido
-    arquivo = fopen(nomeArquivo, "r");
+// Alimenta o dicionário, lendo o arquivo e inserindo seus valores nas árvores fornecidas
+int feedDictionary(char *fileName, TSTNodePointer *treeTST, PatriciaNodePointer *treePatricia) {
+    char currentWord[50]; // Armazenar· a palavra atual em cada iteração
+    FILE *loadedFile = NULL;  // Arquivo TXT lido
+    loadedFile = fopen(fileName, "r");
 
-    if (arquivo == NULL) {
-        printf("O arquivo %s nao existe. Encerrando a execucao. \n", nomeArquivo);
+    if (loadedFile == NULL) {
+        printf("O arquivo %s nao existe. Encerrando a execucao. \n", fileName);
         return 0;
     }
 
     while (1) {
-        fscanf(arquivo, "%s", palavraAtual);
-        if (fgetc(arquivo) == EOF)
+        fscanf(loadedFile, "%s", currentWord);
+        if (fgetc(loadedFile) == EOF)
             break;
 
-        for (int i = 0; i < strlen(palavraAtual); i++)
-            palavraAtual[i] = tolower(palavraAtual[i]);
+        for (int i = 0; i < strlen(currentWord); i++)
+            currentWord[i] = tolower(currentWord[i]);
 
         //insere na TST
-        insertTST(TSTtree, palavraAtual);
+        insertNodeTST(treeTST, currentWord);
 
         //insere na Patricia
-        *Pattree = Insere(palavraAtual, Pattree);
+        *treePatricia = Insere(currentWord, treePatricia);
     }
 
-    fclose(arquivo);
+    fclose(loadedFile);
     return 1;
 }
 
-void processarTST(FILE *arquivo, TSTNodePointer TSTtree) {
+// Processa a árvore TST, comparando cada palavra lida na árvore TST fornecida
+void proccessTST(FILE *loadedFile, TSTNodePointer treeTST) {
     int notFound = 0, greaterWordNotFound = 0, greaterWordFound = 0, total = 0;
-    int comparacoesSucesso = 0;
-    int comparacoesInsucesso = 0;
-    int comparacoes;
+    int successComparisons = 0;
+    int unsuccessComparisons = 0;
+    int comparisons;
     
-    int maiorAlturaSucesso = 0;
-    int maiorAlturaInsucesso = 0;
-    int altura;
+    int successHeight = 0;
+    int unsuccessHeight = 0;
+    int height;
 
-    char palavraAtual[MAX_SIZE], wordFound[MAX_SIZE], wordNotFound[MAX_SIZE];
+    char currentWord[MAX_SIZE], wordFound[MAX_SIZE], wordNotFound[MAX_SIZE];
 
     printf("|||| ARVORE TST ||||\n\n");
     while (1) {
-        comparacoes = 0;
-        altura = 0;
+        comparisons = 0;
+        height = 0;
 
-        fscanf(arquivo, "%s", palavraAtual);
-        if (fgetc(arquivo) == EOF) break;
+        fscanf(loadedFile, "%s", currentWord);
+        if (fgetc(loadedFile) == EOF) break;
 
-        for (int i = 0; i < strlen(palavraAtual); i++)
-            palavraAtual[i] = tolower(palavraAtual[i]);
+        for (int i = 0; i < strlen(currentWord); i++)
+            currentWord[i] = tolower(currentWord[i]);
 
-        if (!searchTST(TSTtree, palavraAtual, &comparacoes, &altura)) {
-            printf("-- Palavra %s nao foi encontrada --\n", palavraAtual);
+        if (!searchTST(treeTST, currentWord, &comparisons, &height)) {
+            printf("-- Palavra %s nao foi encontrada --\n", currentWord);
 
-            if (altura > maiorAlturaInsucesso) {
-                strcpy(wordNotFound, palavraAtual);
-                maiorAlturaInsucesso = altura;
+            if (height > unsuccessHeight) {
+                strcpy(wordNotFound, currentWord);
+                unsuccessHeight = height;
             }
             notFound++;
-            comparacoesInsucesso += comparacoes;
+            unsuccessComparisons += comparisons;
         } else {
-            if (altura > maiorAlturaSucesso) {
-                strcpy(wordFound, palavraAtual);
-                maiorAlturaSucesso = altura;
+            if (height > successHeight) {
+                strcpy(wordFound, currentWord);
+                successHeight = height;
             }
 
-            comparacoesSucesso += comparacoes;
+            successComparisons += comparisons;
         }
         total++;
     }
 
     printf("Total de palavras no texto: %d \n", total);
     printf("Nao foram encontradas %d palavras \n", notFound);
-    if (maiorAlturaSucesso)
-        printf("Altura da maior palavra procurada encontrada: %d - %s \n", maiorAlturaSucesso, wordFound);
-    if (maiorAlturaInsucesso)
-        printf("Altura da maior palavra procurada e nao encontrada: %d - %s \n", maiorAlturaInsucesso, wordNotFound);
-    printf("Foram feitas %d comparacoes pra pesquisas com sucesso e %d pra pesquisas sem sucesso.\n", comparacoesSucesso, comparacoesInsucesso);
+    if (successHeight)
+        printf("Altura da maior palavra procurada encontrada: %d - %s \n", successHeight, wordFound);
+    if (unsuccessHeight)
+        printf("Altura da maior palavra procurada e nao encontrada: %d - %s \n", unsuccessHeight, wordNotFound);
+    printf("Foram feitas %d comparisons pra pesquisas com sucesso e %d pra pesquisas sem sucesso.\n", successComparisons, unsuccessComparisons);
     printf("\n\n");
 
 }
 
-void processarPatricia(FILE *arquivo, PatriciaNodePointer Pattree) {
+// Processa a árvore Patricia, comparando cada palavra lida na árvore TST fornecida
+void proccessPatricia(FILE *loadedFile, PatriciaNodePointer treePatricia) {
     int total = 0;
     int notFound = 0;
     
-    int comparacoesSucesso = 0;
-    int comparacoesInsucesso = 0;
-    int comparacoes;
+    int successComparisons = 0;
+    int unsuccessComparisons = 0;
+    int comparisons;
     
-    int maiorAlturaSucesso = 0;
-    int maiorAlturaInsucesso = 0;
-    int altura;
+    int successHeight = 0;
+    int unsuccessHeight = 0;
+    int height;
     
-    char palavraAtual[MAX_SIZE], wordFound[MAX_SIZE], wordNotFound[MAX_SIZE]; // Armazenar· a palavra atual em cada iteraÁ„o
+    char currentWord[MAX_SIZE], wordFound[MAX_SIZE], wordNotFound[MAX_SIZE]; // Armazenar a palavra atual em cada iteração
 
     printf("|||| ARVORE PATRICIA ||||\n\n");
     while (1) {
-        comparacoes = 0;
-        altura = 0;
+        comparisons = 0;
+        height = 0;
         
-        fscanf(arquivo, "%s", palavraAtual);
-        if (fgetc(arquivo) == EOF) break;
+        fscanf(loadedFile, "%s", currentWord);
+        if (fgetc(loadedFile) == EOF) break;
 
-        for (int i = 0; i < strlen(palavraAtual); i++)
-            palavraAtual[i] = tolower(palavraAtual[i]);
+        for (int i = 0; i < strlen(currentWord); i++)
+            currentWord[i] = tolower(currentWord[i]);
 
-        if (!Pesquisa(palavraAtual, Pattree, &comparacoes, &altura)) {
-            printf("-- Palavra %s nao foi encontrada --\n", palavraAtual);
+        if (!searchPatricia(currentWord, treePatricia, &comparisons, &height)) {
+            printf("-- Palavra %s nao foi encontrada --\n", currentWord);
 
-            if (altura > maiorAlturaInsucesso) {
-                strcpy(wordNotFound, palavraAtual);
-                maiorAlturaInsucesso = altura;
+            if (height > unsuccessHeight) {
+                strcpy(wordNotFound, currentWord);
+                unsuccessHeight = height;
             }
-            comparacoesInsucesso += comparacoes;
+            unsuccessComparisons += comparisons;
             notFound++;
         } else {
-            if (altura > maiorAlturaSucesso) {
-                strcpy(wordFound, palavraAtual);
-                maiorAlturaSucesso = altura;
+            if (height > successHeight) {
+                strcpy(wordFound, currentWord);
+                successHeight = height;
             }
-            comparacoesSucesso += comparacoes;
+            successComparisons += comparisons;
         }
 
         total++;
@@ -138,27 +141,28 @@ void processarPatricia(FILE *arquivo, PatriciaNodePointer Pattree) {
 
     printf("Total de palavras no texto: %d \n", total);
     printf("Nao foram encontradas %d palavras \n", notFound);
-    if (maiorAlturaSucesso)
-        printf("Altura da maior palavra procurada encontrada: %d - %s \n", maiorAlturaSucesso, wordFound);
-    if (maiorAlturaInsucesso)
-        printf("Altura da maior palavra procurada e nao encontrada: %d - %s \n", maiorAlturaInsucesso, wordNotFound);
-    printf("Foram feitas %d comparacoes pra pesquisas com sucesso e %d pra pesquisas sem sucesso.\n", comparacoesSucesso, comparacoesInsucesso);
+    if (successHeight)
+        printf("Altura da maior palavra procurada encontrada: %d - %s \n", successHeight, wordFound);
+    if (unsuccessHeight)
+        printf("Altura da maior palavra procurada e nao encontrada: %d - %s \n", unsuccessHeight, wordNotFound);
+    printf("Foram feitas %d comparisons pra pesquisas com sucesso e %d pra pesquisas sem sucesso.\n", successComparisons, unsuccessComparisons);
     printf("\n\n");
 }
 
-int leArquivo(char *nomeArquivo, TSTNodePointer TSTtree, PatriciaNodePointer Pattree) {
-    FILE *arquivo = NULL;                                                     // Arquivo TXT lido
-    arquivo = fopen(nomeArquivo, "r");
+// Lê um arquivo e processa as árvores fornecidas, buscando as palavras no dicionário
+int readFile(char *fileName, TSTNodePointer treeTST, PatriciaNodePointer treePatricia) {
+    FILE *loadedFile = NULL;                                                     // Arquivo TXT lido
+    loadedFile = fopen(fileName, "r");
     
-    if (arquivo == NULL) {
-        printf("O arquivo %s nao existe. Encerrando a execucao. \n", nomeArquivo);
+    if (loadedFile == NULL) {
+        printf("O loadedFile %s nao existe. Encerrando a execucao. \n", fileName);
         return 0;
     }
     
-    processarTST(arquivo, TSTtree);
-    arquivo = fopen(nomeArquivo, "r");
-    processarPatricia(arquivo, Pattree);
+    proccessTST(loadedFile, treeTST);
+    loadedFile = fopen(fileName, "r");
+    proccessPatricia(loadedFile, treePatricia);
     
-    fclose(arquivo);
+    fclose(loadedFile);
     return 1;
 }
