@@ -31,7 +31,7 @@ int feedDictionary(char *fileName, TSTNodePointer *treeTST, PatriciaNodePointer 
         insertNodeTST(treeTST, currentWord);
 
         //insere na Patricia
-        *treePatricia = Insere(currentWord, treePatricia);
+        *treePatricia = insertPatricia(currentWord, treePatricia);
     }
 
     fclose(loadedFile);
@@ -40,7 +40,7 @@ int feedDictionary(char *fileName, TSTNodePointer *treeTST, PatriciaNodePointer 
 
 // Processa a árvore TST, comparando cada palavra lida na árvore TST fornecida
 void proccessTST(FILE *loadedFile, TSTNodePointer treeTST) {
-    int notFound = 0, greaterWordNotFound = 0, greaterWordFound = 0, total = 0;
+    int notFound = 0, total = 0;
     int successComparisons = 0;
     int unsuccessComparisons = 0;
     int comparisons;

@@ -91,19 +91,16 @@ void printTSTSubtree(TSTNodePointer root, char *buffer, int i)
 
 // The main function to traverse a Ternary Search Tree.
 // It mainly uses traverseTSTUtil()
-void printTST(TSTNodePointer root)
-{
+void printTST(TSTNodePointer root) {
     char buffer[MAX_SIZE];
     printTSTSubtree(root, buffer, 0);
 }
 
-int max(int a, int b)
-{
+int max(int a, int b) {
     return (a > b) ? a : b;
 }
 
-int heightTST(TSTNodePointer root)
-{
+int heightTST(TSTNodePointer root) {
     if (root == NULL)
         return -1;
     int leftHeight = heightTST(root->left);
@@ -112,8 +109,7 @@ int heightTST(TSTNodePointer root)
     return 1 + max(max(leftHeight, eqHeight), rightHeight);
 }
 
-int nodeAmountTST(TSTNodePointer root)
-{
+int nodeAmountTST(TSTNodePointer root) {
     if (root == NULL)
         return 0;
     return 1 + nodeAmountTST(root->left) + nodeAmountTST(root->eq) + nodeAmountTST(root->right);
@@ -122,6 +118,6 @@ int nodeAmountTST(TSTNodePointer root)
 void statsTST(TSTNodePointer root) {
     printf("\t *** Dados da Arvore TST: *** \n");
     printf("Numero de nos TST: %d\n", nodeAmountTST(root));
-    printf("Altura da TST: %d\n", greaterWordTST(root));
+    printf("Altura da TST: %d\n", heightTST(root));
     printf("\t ********* \n");
 }

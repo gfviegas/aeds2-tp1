@@ -8,208 +8,192 @@
 
 #include "Patricia.h"
 
-short isExternal(PatriciaNodePointer p) {
-    return (p->type == External);
+// Verifica se um certo nó da árvore é externo ou não
+short isExternal(PatriciaNodePointer node) {
+    return (node->type == External);
 }
 
-PatriciaNodePointer createInternalNodePatricia(int i, PatriciaNodePointer *left, PatriciaNodePointer *right, char compare) {
+// Percorre a árvore Patricia a fim de descobrir a sua altura
+int heightPatricia(PatriciaNodePointer tree) {
+    int leftHeight = 0, rightHeight = 0;
+
+    if (tree == NULL) {
+        return 0;
+    } else {
+        if (!isExternal(tree)) {
+            leftHeight = heightPatricia(tree->Node.InternNode.left);
+            rightHeight = heightPatricia(tree->Node.InternNode.right);
+        }
+        
+        if (leftHeight < rightHeight)
+            return rightHeight + 1;
+        else
+            return leftHeight + 1;
+    }
+}
+
+// Cria um novo nó interno na árvore, alocando a memória e apontando os dados passados
+PatriciaNodePointer createInternalNodePatricia(PatriciaNodePointer *left, PatriciaNodePointer *right, int index, char compare) {
     PatriciaNodePointer p;
     p = (PatriciaNodePointer)malloc(sizeof(PatriciaNode));
     p->type = Internal;
     p->Node.InternNode.left = *left;
     p->Node.InternNode.right = *right;
-    p->Node.InternNode.index = i;
+    p->Node.InternNode.index = index;
     p->Node.InternNode.compare = compare;
     return p;
 }
 
-PatriciaNodePointer createExternalNodePatricia(String k, PatriciaNodePointer *p) {
+// Cria um novo nó externo na árvore, alocando a memória e setando os dados passados
+PatriciaNodePointer createExternalNodePatricia(String word, PatriciaNodePointer *p) {
     *p = (PatriciaNodePointer)malloc(sizeof(PatriciaNode));
     (*p)->type = External;
-    strcpy((*p)->Node.word, k);
+    strcpy((*p)->Node.word, word);
     return *p;
 }
 
-int searchPatricia(String word, PatriciaNodePointer t, int *comparisons, int *height) {
+// Pesquisa uma palavra na árvore, percorrendo recursivamente até encontrar (ou não) a palavra
+short searchPatricia(String word, PatriciaNodePointer tree, int *comparisons, int *height) {
     (*height)++;
-    if (isExternal(t)) {
-        return (strcmp(word, t->Node.word) == 0) ? 1 : 0;
+    if (isExternal(tree)) {
+        return (strcmp(word, tree->Node.word) == 0) ? 1 : 0;
     }
 
-    if (strlen(word) < t->Node.InternNode.index) {
+    if (strlen(word) < tree->Node.InternNode.index) {
         (*comparisons)++;
-        return searchPatricia(word, t->Node.InternNode.left, comparisons, height);
-    } else if (word[t->Node.InternNode.index] < t->Node.InternNode.compare) {
+        return searchPatricia(word, tree->Node.InternNode.left, comparisons, height);
+    } else if (word[tree->Node.InternNode.index] < tree->Node.InternNode.compare) {
         *comparisons += 2;
-        return searchPatricia(word, t->Node.InternNode.left, comparisons, height);
+        return searchPatricia(word, tree->Node.InternNode.left, comparisons, height);
     } else {
         *comparisons += 3;
-        return searchPatricia(word, t->Node.InternNode.right, comparisons, height);
+        return searchPatricia(word, tree->Node.InternNode.right, comparisons, height);
     }
 }
 
-PatriciaNodePointer PesquisaNoInt(PatriciaNodePointer t, int index, char compara) {
-    if (isExternal(t)) {
-        return NULL;
-    }
-    
-    if (index == t->Node.InternNode.index && compara == t->Node.InternNode.compare) return t;
-    if (index < t->Node.InternNode.index || compara < t->Node.InternNode.compare) return PesquisaNoInt(t->Node.InternNode.left, index, compara);
-    if (index < t->Node.InternNode.index || compara < t->Node.InternNode.compare) return PesquisaNoInt(t->Node.InternNode.right, index, compara);
-    
-    return NULL;
-}
-
-PatriciaNodePointer InsereEntre(String word, PatriciaNodePointer *tree, int index, char differentChar) {
+// Insere um nó na árvore, criando nós internos, se necessário, para alocar uma nova palavra à árvore
+PatriciaNodePointer insertBetweenPatricia(String word, PatriciaNodePointer *tree, int index, char differentChar) {
     PatriciaNodePointer novoNoExt = NULL;
-    PatriciaNodePointer noInterno = NULL;
-
-    noInterno = PesquisaNoInt(*tree, index, differentChar);
 
     if (isExternal(*tree)) {
         createExternalNodePatricia(word, &novoNoExt);
         
         if (strcmp((*tree)->Node.word, word) < 0) {
-            return (createInternalNodePatricia(index, tree, &novoNoExt, differentChar));
+            return (createInternalNodePatricia(tree, &novoNoExt, index, differentChar));
         } else if (strcmp((*tree)->Node.word, word) > 0) {
-            return (createInternalNodePatricia(index, &novoNoExt, tree, differentChar));
+            return (createInternalNodePatricia(&novoNoExt, tree, index, differentChar));
         }
             
         return NULL;
     } else if (index < (*tree)->Node.InternNode.index) {
-        //        printf("CHAMOU CRIA NO INTERNO EM %s. -> %d / %d || %c \ %c \n", word, index, (*tree)->Node.InternNode.index, word[index], differentChar);
         createExternalNodePatricia(word, &novoNoExt);
         
         if (word[index] < differentChar) {
-            return (createInternalNodePatricia(index, &novoNoExt, tree, differentChar));
+            return (createInternalNodePatricia(&novoNoExt, tree, index, differentChar));
         } else {
-            return (createInternalNodePatricia(index, tree, &novoNoExt, differentChar));
+            return (createInternalNodePatricia(tree, &novoNoExt, index, differentChar));
         }
     } else {
         int indexChanged = (*tree)->Node.InternNode.index;
-        // printf("CHAMADA RECURSIVA PRA PALAVRA %s. Difere em %d / %c \n", word, indexChanged, differentChar);
         
         if (word[indexChanged] < (*tree)->Node.InternNode.compare) {
-            (*tree)->Node.InternNode.left = InsereEntre(word, &(*tree)->Node.InternNode.left, index, differentChar);
+            (*tree)->Node.InternNode.left = insertBetweenPatricia(word, &(*tree)->Node.InternNode.left, index, differentChar);
         } else {
-            (*tree)->Node.InternNode.right = InsereEntre(word, &(*tree)->Node.InternNode.right, index, differentChar);
+            (*tree)->Node.InternNode.right = insertBetweenPatricia(word, &(*tree)->Node.InternNode.right, index, differentChar);
         }
         
         return (*tree);
     }
 }
 
-PatriciaNodePointer Insere(String k, PatriciaNodePointer *t)
-{
-    if (*t == NULL)
-        return (createExternalNodePatricia(k, t));
-    else
-    {
-        PatriciaNodePointer p = *t;
-        int i;
-        int ultimoIndex = 0;
+// Chama as funções necessárias e análise de onde difere para inserir uma nova palavra à árvore
+PatriciaNodePointer insertPatricia(String word, PatriciaNodePointer *tree) {
+    if (*tree == NULL) {
+        return (createExternalNodePatricia(word, tree));
+    } else {
+        PatriciaNodePointer p = *tree;
+        int index;
+        int lastIndex = 0;
 
-        while (!isExternal(p))
-        {
-            ultimoIndex = p->Node.InternNode.index;
+        while (!isExternal(p)) {
+            lastIndex = p->Node.InternNode.index;
 
-            if (k[p->Node.InternNode.index] < p->Node.InternNode.compare)
+            if (word[p->Node.InternNode.index] < p->Node.InternNode.compare)
                 p = p->Node.InternNode.left;
-            else if (k[p->Node.InternNode.index] >= p->Node.InternNode.compare)
+            else if (word[p->Node.InternNode.index] >= p->Node.InternNode.compare)
                 p = p->Node.InternNode.right;
             else
                 p = p->Node.InternNode.left;
         }
 
-        if (strcmp(p->Node.word, k) == 0) {
+        if (strcmp(p->Node.word, word) == 0) {
             printf("Erro; chave ja na arvore \n");
-            return (*t);
+            return (*tree);
         } else {
             /**
              * Trecho da função baseado no trio - Vitor Luís, Lucas Duarte e Vinícius Gabriel
              * Copyright © 2018 UFV Florestal. All rights reserved.
              */
             char charDif;
-            // verifica qual palavra é a menor
-            int lowerSize = (strlen(k) < strlen(p->Node.word)) ? strlen(k) : strlen(p->Node.word);
+            
+            // Verifica qual palavra é a menor
+            int lowerSize = (strlen(word) < strlen(p->Node.word)) ? strlen(word) : strlen(p->Node.word);
 
-            for (i = 0; i <= lowerSize; i++) {
-                if (k[i] != p->Node.word[i]) {
-                    if (k[i] < p->Node.word[i]) {
-                        charDif = p->Node.word[i];
+            for (index = 0; index <= lowerSize; index++) {
+                if (word[index] != p->Node.word[index]) {
+                    if (word[index] < p->Node.word[index]) {
+                        charDif = p->Node.word[index];
                         break;
                     } else {
-                        charDif = k[i];
+                        charDif = word[index];
                         break;
                     }
                 }
             }
 
-            //            printf("\t %s. \n\n", k);
-            return InsereEntre(k, t, i, charDif);
+            return insertBetweenPatricia(word, tree, index, charDif);
         }
     }
 }
 
-int heightPatricia(PatriciaNodePointer t)
-{
-    if (t == NULL)
-        return 0;
-    else
-    {
-        int he, hd;
-        if (t->type == Internal)
+// Registra a quantidade de nós em uma sub-árvore Patrícia, recursivamente
+void nodeCountPatricia(PatriciaNodePointer tree, int *internalNodes, int *externalNodes) {
+    if (tree != NULL) {
+        if (tree->type == Internal)
         {
-            he = heightPatricia(t->Node.InternNode.left);
-            hd = heightPatricia(t->Node.InternNode.right);
-        }
-
-        if (he < hd)
-            return hd + 1;
-        else
-            return he + 1;
-    }
-}
-
-void nodeCountPatricia(PatriciaNodePointer t, int *internos, int *externos)
-{
-    if (t != NULL)
-    {
-        if (t->type == Internal)
-        {
-            nodeCountPatricia(t->Node.InternNode.left, internos, externos);
-            nodeCountPatricia(t->Node.InternNode.right, internos, externos);
-            (*internos)++;
+            nodeCountPatricia(tree->Node.InternNode.left, internalNodes, externalNodes);
+            nodeCountPatricia(tree->Node.InternNode.right, internalNodes, externalNodes);
+            (*internalNodes)++;
         }
         else
-            (*externos)++;
+            (*externalNodes)++;
     }
 }
 
-int nodeAmmountPatricia(PatriciaNodePointer treePatricia, PatriciaNodeType tipo)
-{
-    int internos = 0, externos = 0;
-    nodeCountPatricia(treePatricia, &internos, &externos);
-    return (tipo == External) ? externos : internos;
+// Retorna a quantidade de nós encontrados em uma árvore Patricia, de um determinado tipo
+int nodeAmmountPatricia(PatriciaNodePointer tree, PatriciaNodeType nodeType) {
+    int internalNodes = 0, externalNodes = 0;
+    nodeCountPatricia(tree, &internalNodes, &externalNodes);
+    return (nodeType == External) ? externalNodes : internalNodes;
 }
 
-void printPatricia(PatriciaNodePointer t)
-{
-    if (t != NULL)
-    {
-        if (t->type == Internal)
-            printPatricia(t->Node.InternNode.left);
-        if (t->type == External)
-            printf("%s\n", t->Node.word);
-        if (t->type == Internal)
-            printPatricia(t->Node.InternNode.right);
+// Percorre uma árvore patricia, imprimindo os seus registros
+void printPatricia(PatriciaNodePointer tree) {
+    if (tree != NULL) {
+        if (tree->type == Internal)
+            printPatricia(tree->Node.InternNode.left);
+        if (tree->type == External)
+            printf("%s\n", tree->Node.word);
+        if (tree->type == Internal)
+            printPatricia(tree->Node.InternNode.right);
     }
 }
 
-void statsPatricia(PatriciaNodePointer t) {
+// Imprime dados estatísticos da árvore Patricia fornecida
+void statsPatricia(PatriciaNodePointer tree) {
     printf("\t *** Dados da Arvore Patricia: *** \n");
-    printf("Numero de nos internos Patricia: %d\n", nodeAmmountPatricia(t, Internal));
-    printf("Numero de nos externos Patricia: %d\n", nodeAmmountPatricia(t, External));
-    printf("Altura da Patricia: %d\n\n", heightPatricia(t));
+    printf("Numero de nos internos Patricia: %d\n", nodeAmmountPatricia(tree, Internal));
+    printf("Numero de nos externos Patricia: %d\n", nodeAmmountPatricia(tree, External));
+    printf("Altura da Patricia: %d\n\n", heightPatricia(tree));
     printf("\t ********* \n");
 }

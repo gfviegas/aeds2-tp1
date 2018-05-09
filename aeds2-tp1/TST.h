@@ -17,8 +17,7 @@
 typedef char TSTValue;
 typedef struct TSTNode *TSTNodePointer;
 
-typedef struct TSTNode
-{
+typedef struct TSTNode {
     TSTValue data;
 
     // 1 se termina uma palavra no nó
