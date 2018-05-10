@@ -6,7 +6,7 @@
 //  Copyright © 2018 UFV Florestal. All rights reserved.
 //
 //  Implementação da árvore Patrícia feita pelo Professor Ziviani, com alterações do trio para aceitar strings.
-//  A inserção teve ajuda do trio Lucas Duarte, Vitor Luis e Vinicius Gabriel! #thanks
+//  A inserção teve ajuda do trio Lucas Duarte, Vitor Luis e Vinicius Gabriel! #thanks #respect++
 //
 
 #ifndef Patricia_h

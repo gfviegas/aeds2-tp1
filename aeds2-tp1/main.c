@@ -17,7 +17,7 @@
  */
 void printHeader () {
     printf("|| ||\n");
-    printf("|| ||\t NULL 1.0\n");
+    printf("|| ||\t Ultra Blaster TreeDictionarizator Tabajara 1.0\n");
     printf("|| ||\t Trabalho Prático 1 de \"Algoritmos e Estruturas de Dados\" II \n");
     printf("|| ||\t Maio de 2018 - UFV Campus Florestal\n");
     printf("|| ||\t Bruno Marra (3029), Gustavo Viegas (3026) e Heitor Passeado (3055)\n");
@@ -103,6 +103,7 @@ int main() {
     strcpy(filePath, "./dicionario.txt");
     feedDictionary(filePath, &rootTST, &rootPatricia);
 
+    printHeader();
     while (readOperation(&rootTST, &rootPatricia) == 1) {
         printf("\n\n Operação executada! \n\n");
     }
