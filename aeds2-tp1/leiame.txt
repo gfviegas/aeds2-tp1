@@ -1,0 +1,19 @@
+O algoritmo, ao ser executado, irá automaticamente ler o dicionário, já alimentando as duas árvores. 
+Não é necessário entrar com o caminho para o arquivo do dicionário.
+
+O usuário então terá um menu com 7 opções, com código de 0 à 7. 
+Ao inserir o código da operação, ela será imediatamente executada.
+- Código 1: Processa o texto 1 (com todas as palavras pertencentes ao dicionário), 
+    buscando cada palavra nas duas árvores e fornecendo dados sobre este processamento.
+- Código 2: Processa o texto 2 (com todas as palavras não pertencentes ao dicionário), 
+    buscando cada palavra nas duas árvores e fornecendo dados sobre este processamento.
+- Código 3: Processa o texto 3 (com algumas palavras pertencentes ao dicionário e outras não), 
+    buscando cada palavra nas duas árvores e fornecendo dados sobre este processamento.
+- Código 4: Imprime todas as palavras inseridas na Árvore TST.
+- Código 5: Imprime todas as palavras inseridas na Árvore Patricia.
+- Código 6: Imprime dados de altura e quantidade de nós da Árvore TST.
+- Código 7: Imprime dados de altura e quantidade de nós da Árvore Patricia.
+- Código 0: Interrompe a execução do programa.
+
+Após escolher o código e executar a operação o programa continua solicitando um código novo até que se 
+interrompa a execução, ou se insira o código 0.
