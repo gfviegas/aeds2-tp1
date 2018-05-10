@@ -148,9 +148,4 @@ void printPatricia(PatriciaNodePointer tree);
  */
 void statsPatricia(PatriciaNodePointer tree);
 
-//void proccessTST(FILE *loadedFile, TSTNodePointer treeTST);
-
-//void proccessPatricia(FILE *loadedFile, PatriciaNodePointer treePatricia);
-
-
 #endif /* Patricia_h */
