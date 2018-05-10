@@ -88,8 +88,8 @@ int heightTST(TSTNodePointer tree) {
         return -1;
     int leftHeight = heightTST(tree->left);
     int rightHeight = heightTST(tree->right);
-    int eqHeight = heightTST(tree->middle);
-    return 1 + max(max(leftHeight, eqHeight), rightHeight);
+    int middleHeight = heightTST(tree->middle);
+    return 1 + max(max(leftHeight, middleHeight), rightHeight);
 }
 
 // Calcula a quantidade de nós da árvore TST fornecida
